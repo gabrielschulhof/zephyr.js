@@ -34,13 +34,13 @@ void zjs_print_mem_stats()
 
     for (int i = 0; i < MAX_LIST_SIZE; i++) {
         if (mem_array[i].ptr != NULL) {
-            ZJS_PRINT("index %i %s - %s:%d: %p\n", i, mem_array[i].file,
-                      mem_array[i].func, mem_array[i].line, mem_array[i].ptr);
+            ZJS_PRINT("index %i - %s:%d: %p\n", i, mem_array[i].func,
+                      mem_array[i].line, mem_array[i].ptr);
         }
     }
 }
 
-void zjs_push_mem_stat(void *ptr, char *file, const char *func, int line)
+void zjs_push_mem_stat(void *ptr, const char *func, int line)
 {
     int i = 0;
     // Find an open spot
@@ -54,7 +54,6 @@ void zjs_push_mem_stat(void *ptr, char *file, const char *func, int line)
     }
 
     mem_array[i].ptr = ptr;
-    mem_array[i].file = file;
     mem_array[i].func = func;
     mem_array[i].line = line;
 }
@@ -65,7 +64,6 @@ void zjs_pop_mem_stat(void *rm_ptr)
         for (int i = 0; i < MAX_LIST_SIZE; i++) {
             if (mem_array[i].ptr == rm_ptr) {
                 mem_array[i].ptr = NULL;
-                mem_array[i].file = "";
                 mem_array[i].line = 0;
             }
         }
